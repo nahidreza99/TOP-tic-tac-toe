@@ -18,34 +18,64 @@ const gameBoard = (() => {
 const player = (sign) =>{
     let _sign = sign;
     let score = 0;
+    
+    const getSign = () => {
+        return _sign;
+    }
+
+    const getScore = () => {
+        return score;
+    }
+
+    return{
+        getSign,
+        getScore,
+    }
 };
 
 const displayControl = (() => {
-    //
+    const placeSign = (cell, sign) => {
+        cell.innerHTML = sign;
+    }
 
     return{
-
+        placeSign,
     }
 })();
 
 const gameController = (() => {
-    //const playRound = () => 
     const cells = document.getElementsByClassName('block');
-    const placeSign = (sign) => {
+    
+    const p1 = player('X');
+    const p2 = player('O');
+    
+    let currentPlayer = p1;
+    
+    // const placeSign = (sign) => {
 
-    }
+    // }
 
     const clickCell = () => {
         for(let i = 0; i<9; i++){
-            cells[i].onclick = function() {
-                cells[i].innerHTML = 'x';
-                console.log('working');
-            }
+            cells[i].addEventListener('click', e => {
+                displayControl.placeSign(e.target,currentPlayer.getSign());
+                swapTurn();
+            })
+        }
+    }
+
+    const swapTurn  = () => {
+        if(currentPlayer === p1){
+            currentPlayer = p2;
+        }
+        else{
+            currentPlayer = p1;
         }
     }
 
     return{
         clickCell,
+        swapTurn,
     }
 })();
 
