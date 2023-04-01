@@ -2,11 +2,47 @@ const gameBoard = (() => {
     let board = new Array(9);
     
     const getGameBoard = () => {
-        return gameBoard;
+        return board;
     }
 
     const updateCell = (i,sign) => {
         board[i] = sign;
+    }
+
+    const getDiagonal = () => {
+        if(board[0] === board[4] === board[8]){
+            return true;
+        }
+        if(board[2] === board[4] === board[6]){
+            return true;
+        }
+        return false;
+    }
+
+    const getHorizontal = () => {
+        if(board[0] === board[1] === board[2]){
+            return true;
+        }
+        if(board[3] === board[4] === board[5]){
+            return true;
+        }
+        if(board[6] === board[7] === board[8]){
+            return true;
+        }
+        return false;
+    }
+
+    const getVertical = () => {
+        if(board[0] === board[3] === board[6]){
+            return true;
+        }
+        if(board[1] === board[4] === board[7]){
+            return true;
+        }
+        if(board[3] === board[5] === board[8]){
+            return true;
+        }
+        return false;
     }
 
     return{
@@ -58,7 +94,7 @@ const gameController = (() => {
     const clickCell = () => {
         for(let i = 0; i<9; i++){
             cells[i].addEventListener('click', e => {
-                displayControl.placeSign(e.target,currentPlayer.getSign());
+                displayControl.placeSign(e.target, currentPlayer.getSign());
                 swapTurn();
             })
         }
@@ -75,7 +111,6 @@ const gameController = (() => {
 
     return{
         clickCell,
-        swapTurn,
     }
 })();
 
