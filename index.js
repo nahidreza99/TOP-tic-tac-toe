@@ -125,16 +125,20 @@ const gameBoard = (() => {
       score2.innerHTML = player2Score;
     }
 
-    function drawLine(x1, y1, x2, y2) {
-      let line = document.createElement("div");
-      line.style.position = "absolute";
-      line.style.width = "2px";
-      line.style.height = Math.sqrt(Math.pow(y2-y1,2) + Math.pow(x2-x1,2)) + "px";
-      line.style.left = x1+(x2-x1)/2 + "px";
-      line.style.top = y1 + "px";
-      line.style.backgroundColor = "black";
-      line.style.transform = "rotate(" +"-"+ Math.atan2(y2-y1,x2-x1) + "rad)";
-      document.body.appendChild(line);
+    function drawLine(ax, ay, bx, by) {
+      if(ay>by)
+      {
+          bx=ax+bx;  
+          ax=bx-ax;
+          bx=bx-ax;
+          by=ay+by;  
+          ay=by-ay;  
+          by=by-ay;
+      }
+      var calc=Math.atan((ay-by)/(bx-ax));
+      calc=calc*180/Math.PI;
+      var length=Math.sqrt((ax-bx)*(ax-bx)+(ay-by)*(ay-by));
+      document.body.innerHTML += "<div id='line' style='height:" + length + "px;width:5px;background-color:black;position:absolute;top:" + (ay) + "px;left:" + (ax) + "px;transform:rotate(" + calc + "deg);-ms-transform:rotate(" + calc + "deg);transform-origin:0% 0%;-moz-transform:rotate(" + calc + "deg);-moz-transform-origin:0% 0%;-webkit-transform:rotate(" + calc  + "deg);-webkit-transform-origin:0% 0%;-o-transform:rotate(" + calc + "deg);-o-transform-origin:0% 0%;'></div>"
     }
   
     return{
@@ -161,10 +165,10 @@ const gameBoard = (() => {
             displayControl.placeSign(e.target, currentPlayer.getSign());
             if(turn == 9 || (turn>4 && checkEndGame())){
               showEndGameMessage(getWinner());
-              x1=cells[0].getBoundingClientRect().x;
-              y1=cells[0].getBoundingClientRect().y;
-              x2=cells[8].getBoundingClientRect().x;
-              y2=cells[8].getBoundingClientRect().y;
+              x1=cells[0].getBoundingClientRect().x + cells[0].getBoundingClientRect().width/2;
+              y1=cells[0].getBoundingClientRect().y + cells[0].getBoundingClientRect().height/2;
+              x2=cells[8].getBoundingClientRect().x + cells[8].getBoundingClientRect().width/2;
+              y2=cells[8].getBoundingClientRect().y + cells[8].getBoundingClientRect().height/2;
               console.log(x1,y1,x2,y2)
               displayControl.drawLine(x1,y1,x2,y2);
             }
